@@ -73,7 +73,6 @@ class Simulator:
             None
         """
         while not self.event_queue.empty():
-            print(len(self.get_active_evs()))
             current_events = self.event_queue.get_current_events(self._iteration)
             for e in current_events:
                 self.event_history.append(e)
