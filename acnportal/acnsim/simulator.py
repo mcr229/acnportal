@@ -181,7 +181,7 @@ class Simulator:
     def _store_actual_queue_lengths(self):
         """ Store actual queue lengths from the network in the simulator for later analysis."""
         current_len = len(self.get_active_evs())
-        self.queue_lengths[self._iteration] = current_len
+        self.queue_lengths[self._iteration-1] = current_len
 
     def _print(self, s):
         if self.verbose:
