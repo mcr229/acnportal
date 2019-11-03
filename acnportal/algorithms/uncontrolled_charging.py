@@ -66,5 +66,5 @@ class ConstantCharging(BaseAlgorithm):
         """
         schedule = {}
         for ev in active_evs:
-            schedule[ev.station_id] = [self.const_value]
+            schedule[ev.station_id] = [self.const]
         return schedule
