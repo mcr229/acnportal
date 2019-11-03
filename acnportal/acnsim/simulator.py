@@ -41,7 +41,7 @@ class Simulator:
         # Information storage
         self.pilot_signals = np.zeros((len(self.network.station_ids), self.event_queue.get_last_timestamp() + 1))
         self.charging_rates = np.zeros((len(self.network.station_ids), self.event_queue.get_last_timestamp() + 1))
-        self.queue_lengths = np.zeros(self.event_queue.get_last_timestamp() + 1)
+        self.queue_lengths = []
         self.peak = 0
         self.ev_history = {}
         self.event_history = []
@@ -181,7 +181,7 @@ class Simulator:
     def _store_actual_queue_lengths(self):
         """ Store actual queue lengths from the network in the simulator for later analysis."""
         current_len = len(self.get_active_evs())
-        self.queue_lengths[self._iteration-1] = current_len
+        self.queue_lengths.append(current_len)
 
     def _print(self, s):
         if self.verbose:
