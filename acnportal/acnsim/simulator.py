@@ -72,6 +72,7 @@ class Simulator:
             None
         """
         while not self.event_queue.empty():
+            print(self.get_active_evs())
             current_events = self.event_queue.get_current_events(self._iteration)
             for e in current_events:
                 self.event_history.append(e)
@@ -188,7 +189,7 @@ class Simulator:
 
     def index_of_evse(self, station_id):
         """ Return the numerical index of the EVSE given by station_id in the (ordered) dictionary
-        of EVSEs. 
+        of EVSEs.
         """
         if station_id not in self.network.station_ids:
             raise KeyError("EVSE {0} not found in network.".format(station_id))
