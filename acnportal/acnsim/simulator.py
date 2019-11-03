@@ -41,6 +41,7 @@ class Simulator:
         # Information storage
         self.pilot_signals = np.zeros((len(self.network.station_ids), self.event_queue.get_last_timestamp() + 1))
         self.charging_rates = np.zeros((len(self.network.station_ids), self.event_queue.get_last_timestamp() + 1))
+        self.queue_lengths = np.zeros(self.event_queue.get_last_timestamp() + 1)
         self.peak = 0
         self.ev_history = {}
         self.event_history = []
@@ -88,6 +89,7 @@ class Simulator:
                 self._resolve = False
             self.network.update_pilots(self.pilot_signals, self._iteration, self.period)
             self._store_actual_charging_rates()
+            self._store_actual_queue_lengths()
             self._iteration = self._iteration + 1
 
     def get_active_evs(self):
@@ -101,6 +103,9 @@ class Simulator:
         """
         evs = copy.deepcopy(self.network.active_evs)
         return evs
+
+    def get_active_evs_queue(self):
+        return self.queue_lengths
 
     def _process_event(self, event):
         """ Process an event and take appropriate actions.
@@ -172,6 +177,11 @@ class Simulator:
             self.charging_rates = _increase_width(self.charging_rates, self.event_queue.get_last_timestamp() + 1)
             self.charging_rates[:, self._iteration] = current_rates.T
         self.peak = max(self.peak, agg)
+
+    def _store_actual_queue_lengths(self):
+        """ Store actual queue lengths from the network in the simulator for later analysis."""
+        current_len = len(self.get_active_evs())
+        self.queue_lengths[self._iteration] = current_len
 
     def _print(self, s):
         if self.verbose:
