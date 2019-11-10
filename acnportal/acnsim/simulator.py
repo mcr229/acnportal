@@ -85,8 +85,7 @@ class Simulator:
                     station = e.station_id
                     for ev in self.evs_charged:
                         if ev.station_id == station:
-                            print(ev)
-                            if ev.fully_charged():
+                            if ev.fully_charged:
                                 self.evs_charged[ev] = True
 
                 self.event_history.append(e)
