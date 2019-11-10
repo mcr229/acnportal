@@ -84,6 +84,7 @@ class Simulator:
                 elif e.type == 'Unplug':
                     station = e.station_id
                     for ev in self.evs_charged:
+                        print(ev)
                         if ev.station_id == station:
                             if ev.fully_charged():
                                 self.evs_charged[ev] = True
