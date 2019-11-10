@@ -82,9 +82,11 @@ class Simulator:
                         self.evs_charged[ev] = False
 
                 elif e.type == 'Unplug':
-                    ev = e.ev
-                    if ev.fully_charged():
-                        self.evs_charged[ev] = True
+                    station = e.station_id
+                    for ev in self.evs_charged:
+                        if ev.station_id == station:
+                            if ev.fully_charged():
+                                self.evs_charged[ev] = True
 
                 self.event_history.append(e)
                 self._process_event(e)
