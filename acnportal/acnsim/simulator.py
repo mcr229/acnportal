@@ -37,6 +37,7 @@ class Simulator:
         self.max_recompute = scheduler.max_recompute
         self.signals = signals
         self.verbose = verbose
+        self.evs_charged = {}
 
         # Information storage
         self.pilot_signals = np.zeros((len(self.network.station_ids), self.event_queue.get_last_timestamp() + 1))
@@ -75,6 +76,16 @@ class Simulator:
         while not self.event_queue.empty():
             current_events = self.event_queue.get_current_events(self._iteration)
             for e in current_events:
+                if e.type == 'Plugin':
+                    ev = e.ev
+                    if ev not in self.evs_charged:
+                        self.evs_charged[ev] = False
+
+                elif e.type == 'Unplug':
+                    ev = e.ev
+                    if ev.fully_charged():
+                        self.evs_charged[ev] = True
+
                 self.event_history.append(e)
                 self._process_event(e)
             if self._resolve or \
@@ -105,6 +116,9 @@ class Simulator:
 
     def get_active_evs_queue(self):
         return self.queue_lengths
+
+    def get_evs(self):
+        return self.evs_charged
 
     def _process_event(self, event):
         """ Process an event and take appropriate actions.
