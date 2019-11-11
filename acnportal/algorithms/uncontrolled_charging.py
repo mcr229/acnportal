@@ -46,6 +46,7 @@ class ConstantCharging(BaseAlgorithm):
     """
     def __init__(self, const_value):
         super().__init__()
+        print("hit")
         self.const = const_value  # Call algorithm each period since it only returns a rate for the next period.
         self.max_recompute = 1
 
