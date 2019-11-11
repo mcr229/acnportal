@@ -47,6 +47,7 @@ class ConstantCharging(BaseAlgorithm):
     def __init__(self, const_value):
         super().__init__()
         self.const = const_value  # Call algorithm each period since it only returns a rate for the next period.
+        self.max_recompute = 1
 
     def schedule(self, active_evs):
         """ Schedule each EV to charge as quickly as possible ignoring all infrastructure constraints.
